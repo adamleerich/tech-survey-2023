@@ -18,3 +18,13 @@ https://ie.milliman.com/-/media/milliman/importedfiles/uploadedfiles/insight/201
 
 
 
+
+Contact at CAS
+  Elizabeth Smith
+  Mike Boa
+
+
+Goal: write an article for the actuarial review, to be published in Jan/Feb?
+
+Tech survey launced on July 31
+
