@@ -1,3 +1,17 @@
+# TODOs
+
+## Ideas of what to talk about
+
+* How has usage changed over the three years?
+* Classify respondents into "wants to learn" and "doesn't want to learn"?  -- idea from discussions with Brian and Kevin
+* ChatGPT summary of long-form answers
+
+
+
+## Locations
+
+
+
 Tech survey github repo
 https://github.com/casact/technology_survey
 
