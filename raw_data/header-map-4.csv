@@ -1,0 +1,137 @@
+old_name,new_name
+Age|Response,age
+Approximate number of CAS actuaries at my organization:|Response,actuaries_at_my_organization
+Collector ID,collector_id
+Custom Data 1,custom_data_1
+Designation|ACAS,designation_acas
+Designation|CSPA,designation_cspa
+Designation|FCAS,designation_fcas
+Designation|None yet,designation_none
+Designation|Response,designation
+Email Address,email_address
+End Date,end_date
+First Name,first_name
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|A business intelligence dashboarding tool like Power BI,increase_proficiency_PowerBI
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|A data visualization tool like Tableau,increase_proficiency_Tableau
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|Excel,increase_proficiency_Excel
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|Google Sheets,increase_proficiency_GoogleSheets
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|Matlab/Octave,increase_proficiency_MATLAB
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|Other (please specify),increase_proficiency_other
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|Python,increase_proficiency_Python
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|R,increase_proficiency_R
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|SAS,increase_proficiency_SAS
+For which of the following tools do you plan to increase your proficiency in the next 12 months?|SQL,increase_proficiency_SQL
+How many years of experience do you have working in the actuarial field?|Response,years_of_experience
+How often do you use each of the following tools?|Business intelligence dasboarding tool like PowerBI,how_often_use_PowerBI
+How often do you use each of the following tools?|Business intelligence dashboarding tool like PowerBI,how_often_use_PowerBI
+How often do you use each of the following tools?|Data visualization tool like Tableau,how_often_use_Tableau
+How often do you use each of the following tools?|Excel,how_often_use_Excel
+"How often do you use each of the following tools?|If something else, please specify:",how_often_use_Other_specific
+How often do you use each of the following tools?|Matlab/Octave,how_often_use_MATLAB
+How often do you use each of the following tools?|Non-Excel spreadsheet like Google Sheets,how_often_use_GoogleSheets
+How often do you use each of the following tools?|Python,how_often_use_Python
+How often do you use each of the following tools?|R,how_often_use_R
+How often do you use each of the following tools?|SAS,how_often_use_SAS
+How often do you use each of the following tools?|Something else,how_often_use_Other
+How often do you use each of the following tools?|SQL,how_often_use_SQL
+How proficient are you with each of the following tools?|Business intelligence dasboarding tool like PowerBI,how_proficient_PowerBI
+How proficient are you with each of the following tools?|Business intelligence dashboarding tool like PowerBI,how_proficient_PowerBI
+How proficient are you with each of the following tools?|Data visualization tool like Tableau,how_proficient_Tableau
+How proficient are you with each of the following tools?|Excel,how_proficient_Excel
+"How proficient are you with each of the following tools?|If something else, please specify:<br>",how_proficient_Other_specific
+How proficient are you with each of the following tools?|Matlab/Octave,how_proficient_MATLAB
+How proficient are you with each of the following tools?|Non-Excel spreadsheet like Google Sheets,how_proficient_GoogleSheets
+How proficient are you with each of the following tools?|Python,how_proficient_Python
+How proficient are you with each of the following tools?|R,how_proficient_R
+How proficient are you with each of the following tools?|SAS,how_proficient_SAS
+How proficient are you with each of the following tools?|Something else,how_proficient_Other
+How proficient are you with each of the following tools?|SQL,how_proficient_SQL
+How well do you think the following tools are suited for various areas of actuarial practice?|Business intelligence dasboarding tool like PowerBI - Capital modeling,suited_capital_modeling_PowerBI
+How well do you think the following tools are suited for various areas of actuarial practice?|Business intelligence dasboarding tool like PowerBI - Ratemaking,suited_ratemaking_PowerBI
+How well do you think the following tools are suited for various areas of actuarial practice?|Business intelligence dasboarding tool like PowerBI - Reserving,suited_reserving_PowerBI
+How well do you think the following tools are suited for various areas of actuarial practice?|Business intelligence dashboarding tool like PowerBI - Capital modeling,suited_capital_modeling_PowerBI
+How well do you think the following tools are suited for various areas of actuarial practice?|Business intelligence dashboarding tool like PowerBI - Ratemaking,suited_ratemaking_PowerBI
+How well do you think the following tools are suited for various areas of actuarial practice?|Business intelligence dashboarding tool like PowerBI - Reserving,suited_reserving_PowerBI
+How well do you think the following tools are suited for various areas of actuarial practice?|Data visualization tool like Tableau - Capital modeling,suited_capital_modeling_Tableau
+How well do you think the following tools are suited for various areas of actuarial practice?|Data visualization tool like Tableau - Ratemaking,suited_ratemaking_Tableau
+How well do you think the following tools are suited for various areas of actuarial practice?|Data visualization tool like Tableau - Reserving,suited_reserving_Tableau
+How well do you think the following tools are suited for various areas of actuarial practice?|Excel - Capital modeling,suited_capital_modeling_Excel
+How well do you think the following tools are suited for various areas of actuarial practice?|Excel - Ratemaking,suited_ratemaking_Excel
+How well do you think the following tools are suited for various areas of actuarial practice?|Excel - Reserving,suited_reserving_Excel
+"How well do you think the following tools are suited for various areas of actuarial practice?|If something else, please specify:",suited_Other_specific
+How well do you think the following tools are suited for various areas of actuarial practice?|Matlab/Octave - Capital modeling,suited_capital_modeling_MATLAB
+How well do you think the following tools are suited for various areas of actuarial practice?|Matlab/Octave - Ratemaking,suited_ratemaking_MATLAB
+How well do you think the following tools are suited for various areas of actuarial practice?|Matlab/Octave - Reserving,suited_reserving_MATLAB
+How well do you think the following tools are suited for various areas of actuarial practice?|Non-Excel spreadsheet like Google Sheets - Capital modeling,suited_capital_modeling_GoogleSheets
+How well do you think the following tools are suited for various areas of actuarial practice?|Non-Excel spreadsheet like Google Sheets - Ratemaking,suited_ratemaking_GoogleSheets
+How well do you think the following tools are suited for various areas of actuarial practice?|Non-Excel spreadsheet like Google Sheets - Reserving,suited_reserving_GoogleSheets
+How well do you think the following tools are suited for various areas of actuarial practice?|Python - Capital modeling,suited_capital_modeling_Python
+How well do you think the following tools are suited for various areas of actuarial practice?|Python - Ratemaking,suited_ratemaking_Python
+How well do you think the following tools are suited for various areas of actuarial practice?|Python - Reserving,suited_reserving_Python
+How well do you think the following tools are suited for various areas of actuarial practice?|R - Capital modeling,suited_capital_modeling_R
+How well do you think the following tools are suited for various areas of actuarial practice?|R - Ratemaking,suited_ratemaking_R
+How well do you think the following tools are suited for various areas of actuarial practice?|R - Reserving,suited_reserving_R
+How well do you think the following tools are suited for various areas of actuarial practice?|SAS - Capital modeling,suited_capital_modeling_SAS
+How well do you think the following tools are suited for various areas of actuarial practice?|SAS - Ratemaking,suited_ratemaking_SAS
+How well do you think the following tools are suited for various areas of actuarial practice?|SAS - Reserving,suited_reserving_SAS
+How well do you think the following tools are suited for various areas of actuarial practice?|Something else,suited_Other
+How well do you think the following tools are suited for various areas of actuarial practice?|Something else - Capital modeling,suited_capital_modeling_Other
+How well do you think the following tools are suited for various areas of actuarial practice?|Something else - Ratemaking,suited_ratemaking_Other
+How well do you think the following tools are suited for various areas of actuarial practice?|Something else - Reserving,suited_reserving_Other
+How well do you think the following tools are suited for various areas of actuarial practice?|SQL - Capital modeling,suited_capital_modeling_SQL
+How well do you think the following tools are suited for various areas of actuarial practice?|SQL - Ratemaking,suited_ratemaking_SQL
+How well do you think the following tools are suited for various areas of actuarial practice?|SQL - Reserving,suited_reserving_SQL
+How were you planning to increase your proficiency?|In-person course,learning_plan_in_person
+How were you planning to increase your proficiency?|Online course,learning_plan_online
+How were you planning to increase your proficiency?|Other (please specify),learning_plan_other
+How were you planning to increase your proficiency?|Self-study,learning_plan_self_study
+IP Address,ip_address
+Is there a question about technology in actuarial science that you wish the CAS would have asked on this survey?|Open-Ended Response,should_have_asked
+Last Name,last_name
+"Of those techniques listed above which you do not use regularly, why are you not using them?|Financial cost",barrier_technique_financial_cost
+"Of those techniques listed above which you do not use regularly, why are you not using them?|Insufficient/inadequate staff",barrier_technique_inadequate_staff
+"Of those techniques listed above which you do not use regularly, why are you not using them?|Lack of IT support",barrier_technique_lack_of_it_support
+"Of those techniques listed above which you do not use regularly, why are you not using them?|Lack of knowledge",barrier_technique_lack_of_knowledge
+"Of those techniques listed above which you do not use regularly, why are you not using them?|Lack of management support",barrier_technique_lack_of_management_support
+"Of those techniques listed above which you do not use regularly, why are you not using them?|No perceived benefit",barrier_technique_no_perceived_benefit
+"Of those techniques listed above which you do not use regularly, why are you not using them?|Not enough time",barrier_technique_not_enough_time
+"Of those techniques listed above which you do not use regularly, why are you not using them?|Other (please specify)",barrier_technique_other
+Please use this space for any additional comments.|Open-Ended Response,additional_comments
+Respondent ID,respondent_id
+Start Date,start_date
+What barriers (if any) are preventing you from implementing new technology?|Financial cost,barrier_implementation_financial_cost
+What barriers (if any) are preventing you from implementing new technology?|Insufficient/inadequate staff,barrier_implementation_inadequate_staff
+What barriers (if any) are preventing you from implementing new technology?|Lack of IT support,barrier_implementation_lack_of_it_support
+What barriers (if any) are preventing you from implementing new technology?|Lack of management support,barrier_implementation_lack_of_management_support
+What barriers (if any) are preventing you from implementing new technology?|No perceived benefit,barrier_implementation_no_perceived_benefit
+What barriers (if any) are preventing you from implementing new technology?|Not enough time,barrier_implementation_not_enough_time
+What barriers (if any) are preventing you from implementing new technology?|Other (please specify),barrier_implementation_other
+What barriers (if any) are preventing you from learning new technology?|Financial cost,barrier_learning_financial_cost
+What barriers (if any) are preventing you from learning new technology?|Insufficient/inadequate staff,barrier_learning_inadequate_staff
+What barriers (if any) are preventing you from learning new technology?|Lack of IT support,barrier_learning_lack_of_it_support
+What barriers (if any) are preventing you from learning new technology?|Lack of management support,barrier_learning_lack_of_management_support
+What barriers (if any) are preventing you from learning new technology?|No perceived benefit,barrier_learning_no_perceived_benefit
+What barriers (if any) are preventing you from learning new technology?|Not enough time,barrier_learning_not_enough_time
+What barriers (if any) are preventing you from learning new technology?|Other (please specify),barrier_learning_other
+What new technology should actuaries consider adopting that isn't noted on this survey?|Open-Ended Response,new_tech_to_adopt
+What other tools do you think should be added to the list above?|Open-Ended Response,what_other_tools_should_be_added
+What type of company do you work for?|Other (please specify),type_of_company_other
+What type of company do you work for?|Response,what_type_of_company_do_you_work_for
+Where are you located?|Other (please specify),located_other
+Where are you located?|Response,where_are_you_located
+Which of the following general analytic techniques do you use regularly?|AI/deep learning,technique_use_aideep_learning
+"Which of the following general analytic techniques do you use regularly?|Bayesian analysis, and/or MCMC",technique_use_bayesian
+Which of the following general analytic techniques do you use regularly?|Bornhuetter-Ferguson,technique_use_bornhuetter_ferguson
+Which of the following general analytic techniques do you use regularly?|Chain-ladder,technique_use_chain_ladder
+Which of the following general analytic techniques do you use regularly?|Credibility,technique_use_credibility
+Which of the following general analytic techniques do you use regularly?|Excess loss analysis,technique_use_excess_loss_analysis
+Which of the following general analytic techniques do you use regularly?|Frequency-severity,technique_use_frequency_severity
+"Which of the following general analytic techniques do you use regularly?|Linear regression, including GLMs",technique_use_linear_models
+Which of the following general analytic techniques do you use regularly?|Other (please specify),technique_use_other
+Which of the following general analytic techniques do you use regularly?|Premium adjustment,technique_use_premium_adjustment
+Which of the following general analytic techniques do you use regularly?|Simulation,technique_use_simulation
+"Which of the following general analytic techniques do you use regularly?|Time series analysis, including claim trend analysis",technique_use_time_series
+Which of the following general analytic techniques do you use regularly?|Tree-based methods like random forests,technique_use_tree_based_methods
+Which of the following general analytic techniques do you use regularly?|Triangle-based methods including Chain-ladder and Bornhuetter-Ferguson,technique_use_triangle_based
+Which of the following general analytic techniques do you use regularly?|Unsupervised learning methods like clustering or PCA,technique_use_unsupervised_learning
+Would you like to be contacted about learning opportunities/email communication?|Response,ok_with_being_contacted
