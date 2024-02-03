@@ -1,5 +1,8 @@
 library(tidyverse)
 library(alrtools)
+# Install alrtools from https://github.com/adamleerich/alrtools
+# devtools::install_github('adamleerich/alrtools')
+
 
 # Variables that might change year-to-year
 years <- c(2021:2023)
