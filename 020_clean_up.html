@@ -9,11 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Adam" />
+<meta name="author" content="Adam.Rich" />
 
-<meta name="date" content="2024-01-21" />
+<meta name="date" content="2024-02-04" />
 
-<title>020-clean-up.R</title>
+<title>020_clean_up.R</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,9 +350,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">020-clean-up.R</h1>
-<h4 class="author">Adam</h4>
-<h4 class="date">2024-01-21</h4>
+<h1 class="title toc-ignore">020_clean_up.R</h1>
+<h4 class="author">Adam.Rich</h4>
+<h4 class="date">2024-02-04</h4>
 
 </div>
 
@@ -379,7 +379,12 @@ display: none;
 ## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     ifelse</code></pre>
-<pre class="r"><code># Variables that might change year-to-year
+<pre class="r"><code># Install alrtools from https://github.com/adamleerich/alrtools
+# devtools::install_github(&#39;adamleerich/alrtools&#39;)
+
+
+
+# Variables that might change year-to-year
 rds_in  &lt;- &#39;data/all_responses.Rds&#39;
 rds_out &lt;- &#39;data/all_responses_clean.Rds&#39;
 csv_out &lt;- &#39;data/all_responses_clean.csv&#39;
@@ -456,6 +461,148 @@ d$designation_fcas[d$designation == &#39;FCAS&#39;] &lt;- &#39;FCAS&#39;
 d$designation_cspa[d$designation == &#39;CSPA&#39;] &lt;- &#39;CSPA&#39;
 
 
+
+# Fix suited other columns
+#
+#   Combine 2022 suited_Other and 2023 suited_Other_specific
+#   There are free text fields
+#
+#   Have expected suited level set:
+#     2023 suited_ratemaking_Other
+#     2023 suited_reserving_Other
+#     2023 suited_capital_modeling_Other
+#
+#   Everything else should be NA!
+#
+
+# d_suited__long &lt;- d %&gt;% 
+#   mutate(ID = 1:nrow(d)) %&gt;% 
+#   select(
+#     year,
+#     ID,
+#     suited_Other,
+#     suited_ratemaking_Other,
+#     suited_reserving_Other,
+#     suited_capital_modeling_Other,
+#     suited_Other_specific) %&gt;% 
+#   pivot_longer(
+#     cols = -c(&#39;year&#39;, &#39;ID&#39;)) %&gt;% 
+#   mutate(
+#     new_col = paste0(name, &#39;__&#39;, year)) %&gt;% 
+#   select(-name)
+# 
+# d_suited__wide &lt;- d_suited__long %&gt;% 
+#   pivot_wider(
+#     id_cols = c(&#39;ID&#39;, &#39;year&#39;), 
+#     names_from = new_col,
+#     values_from = value)
+# 
+# d_suited__wide__info &lt;- info(d_suited__wide)
+# 
+# d_suited__wide__info %&gt;% 
+#   filter(unique_values &gt; 0) %&gt;% 
+#   select(column, levels)
+# 
+# d_suited__wide__info %&gt;% 
+#   filter(unique_values == 0) %&gt;% 
+#   select(column)
+# 
+# # Check that expected column/year combos are all NA!
+# # This should have ZERO rows
+# should_be_NA &lt;- d_suited__long %&gt;% 
+#   filter(!is.na(value), new_col %in% c(
+#     &#39;suited_Other__2021&#39;,
+#     &#39;suited_ratemaking_Other__2021&#39;,
+#     &#39;suited_reserving_Other__2021&#39;,
+#     &#39;suited_capital_modeling_Other__2021&#39;,
+#     &#39;suited_Other_specific__2021&#39;,
+#     &#39;suited_ratemaking_Other__2022&#39;,
+#     &#39;suited_reserving_Other__2022&#39;,
+#     &#39;suited_capital_modeling_Other__2022&#39;,
+#     &#39;suited_Other_specific__2022&#39;,
+#     &#39;suited_Other__2023&#39;))
+#            
+# stopifnot(nrow(should_be_NA) == 0)
+
+d$suited_Other_specific &lt;- ifelse(
+  d$year == 2022, 
+  d$suited_Other,
+  d$suited_Other_specific)
+
+d$suited_Other &lt;- NA
+
+
+
+
+# Fix &quot;other specific&quot; columns
+# In 2021-2022, &quot;other&quot; columns were free-text
+# In 2023, the questions were renamed to be &quot;Other_specific&quot;
+# The old questions were retained as radio options for freq, usefulness, etc.
+# We put the free-form answers from 2021-2022 into the &quot;Other_specific&quot; cols
+
+# d_specific__long &lt;- d %&gt;%
+#   mutate(ID = 1:nrow(d)) %&gt;%
+#   select(
+#     year,
+#     ID,
+#     how_often_use_Other,
+#     how_often_use_Other_specific,
+#     how_proficient_Other,
+#     how_proficient_Other_specific) %&gt;%
+#   pivot_longer(
+#     cols = -c(&#39;year&#39;, &#39;ID&#39;)) %&gt;%
+#   mutate(
+#     new_col = paste0(name, &#39;__&#39;, year)) %&gt;%
+#   select(-name)
+# 
+# d_specific__wide &lt;- d_specific__long %&gt;%
+#   pivot_wider(
+#     id_cols = c(&#39;ID&#39;, &#39;year&#39;),
+#     names_from = new_col,
+#     values_from = value)
+# 
+# d_specific__wide__info &lt;- info(d_specific__wide)
+# 
+# d_specific__wide__info %&gt;%
+#   filter(unique_values &gt; 0) %&gt;%
+#   select(column, levels)
+# 
+# d_specific__wide__info %&gt;%
+#   filter(unique_values == 0) %&gt;%
+#   select(column)
+# 
+# # Check that expected column/year combos are all NA!
+# # This should have ZERO rows
+# should_be_NA &lt;- d_specific__long %&gt;%
+#   filter(!is.na(value), new_col %in% c(
+#     &#39;how_often_use_Other__2021&#39;,
+#     &#39;how_often_use_Other_specific__2021&#39;,
+#     &#39;how_proficient_Other__2021&#39;,
+#     &#39;how_proficient_Other_specific__2021&#39;,
+#     &#39;how_often_use_Other_specific__2022&#39;,
+#     &#39;how_proficient_Other_specific__2022&#39;))
+# 
+# stopifnot(nrow(should_be_NA) == 0)
+
+d$how_proficient_Other_specific &lt;- ifelse(
+  d$year &lt;= 2022, 
+  d$how_proficient_Other,
+  d$how_proficient_Other_specific)
+
+d$how_often_use_Other_specific &lt;- ifelse(
+  d$year &lt;= 2022, 
+  d$how_often_use_Other,
+  d$how_often_use_Other_specific)
+
+d$how_proficient_Other[d$year &lt;= 2022] &lt;- NA
+d$how_often_use_Other[d$year &lt;= 2022] &lt;- NA
+
+
+
+
+
+
+
 ## Classify each column and make sure we&#39;ve covered all of them
 
 qs_ID &lt;- c(&#39;year&#39;, &#39;row&#39;)
@@ -466,15 +613,8 @@ qs_ignore &lt;- c(
   &#39;ok_with_being_contacted&#39;, &#39;collector_id&#39;, &#39;ip_address&#39;, &#39;respondent_id&#39;, 
   &#39;start_date&#39;, &#39;end_date&#39;, 
   # Exploded in 2023
-  &#39;designation&#39;, 
-  # Removed in 2022
-  &#39;how_often_use_MATLAB&#39;, 
-  &#39;how_proficient_MATLAB&#39;, &#39;suited_ratemaking_MATLAB&#39;, 
-  &#39;suited_reserving_MATLAB&#39;, &#39;suited_capital_modeling_MATLAB&#39;, 
-  &#39;increase_proficiency_MATLAB&#39;, 
-  # Removed in 2023
-  &#39;technique_use_bornhuetter_ferguson&#39;, 
-  &#39;technique_use_chain_ladder&#39;, 
+  &#39;designation&#39;,
+  # All NAs
   &#39;suited_Other&#39;)
 
 ## Columns with the following value set:
@@ -488,7 +628,8 @@ qs_ignore &lt;- c(
 qs_how_often &lt;- c(
   &#39;how_often_use_R&#39;, &#39;how_often_use_Excel&#39;, &#39;how_often_use_GoogleSheets&#39;, 
   &#39;how_often_use_SAS&#39;, &#39;how_often_use_Python&#39;, &#39;how_often_use_Tableau&#39;, 
-  &#39;how_often_use_PowerBI&#39;, &#39;how_often_use_SQL&#39;)
+  &#39;how_often_use_PowerBI&#39;, &#39;how_often_use_SQL&#39;, &#39;how_often_use_MATLAB&#39;,
+  &#39;how_often_use_Other&#39;)
 
 ## Columns with the following value set:
 ##   Advanced
@@ -499,7 +640,8 @@ qs_how_often &lt;- c(
 qs_proficient &lt;- c(
   &#39;how_proficient_R&#39;, &#39;how_proficient_Excel&#39;, &#39;how_proficient_GoogleSheets&#39;, 
   &#39;how_proficient_SAS&#39;, &#39;how_proficient_Python&#39;, &#39;how_proficient_Tableau&#39;, 
-  &#39;how_proficient_PowerBI&#39;, &#39;how_proficient_SQL&#39;)
+  &#39;how_proficient_PowerBI&#39;, &#39;how_proficient_SQL&#39;, &#39;how_proficient_MATLAB&#39;,
+  &#39;how_proficient_Other&#39;)
 
 
 ## Columns with the following value set:
@@ -521,7 +663,9 @@ qs_suited &lt;- c(
   &#39;suited_reserving_PowerBI&#39;, &#39;suited_capital_modeling_PowerBI&#39;, 
   &#39;suited_ratemaking_SQL&#39;, &#39;suited_reserving_SQL&#39;, 
   &#39;suited_capital_modeling_SQL&#39;, &#39;suited_ratemaking_Other&#39;, 
-  &#39;suited_reserving_Other&#39;, &#39;suited_capital_modeling_Other&#39;)
+  &#39;suited_reserving_Other&#39;, &#39;suited_capital_modeling_Other&#39;, 
+  &#39;suited_ratemaking_MATLAB&#39;, &#39;suited_reserving_MATLAB&#39;, 
+  &#39;suited_capital_modeling_MATLAB&#39;)
 
 ## Single values: will convert to logical
 qs_logical &lt;- c(
@@ -551,7 +695,8 @@ qs_logical &lt;- c(
   &#39;barrier_technique_lack_of_it_support&#39;, &#39;barrier_technique_financial_cost&#39;, 
   &#39;barrier_technique_not_enough_time&#39;, &#39;barrier_technique_no_perceived_benefit&#39;, 
   &#39;barrier_technique_lack_of_knowledge&#39;, &#39;learning_plan_self_study&#39;, 
-  &#39;learning_plan_online&#39;, &#39;learning_plan_in_person&#39;)
+  &#39;learning_plan_online&#39;, &#39;learning_plan_in_person&#39;, &#39;increase_proficiency_MATLAB&#39;,
+  &#39;technique_use_bornhuetter_ferguson&#39;, &#39;technique_use_chain_ladder&#39;)
 
 
 ## Unique domains
@@ -582,11 +727,15 @@ qs_expected &lt;- c(
   qs_demo,
   qs_freetext)
 
-setdiff(names(d), qs_expected)</code></pre>
-<pre><code>## character(0)</code></pre>
-<pre class="r"><code>setdiff(qs_expected, names(d))</code></pre>
-<pre><code>## character(0)</code></pre>
-<pre class="r"><code>## CLEAN UP
+stopifnot(
+  length(setdiff(names(d), qs_expected)) + 
+    length(setdiff(qs_expected, names(d))) == 0
+)
+
+
+
+
+## CLEAN UP
 map_to_factor &lt;- function(v, map_from, map_to) {
   qdiff &lt;- setdiff(v, c(map_from, NA))
   stopifnot(length(qdiff) == 0)

@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Adam" />
+<meta name="author" content="Adam.Rich" />
 
-<meta name="date" content="2024-01-21" />
+<meta name="date" content="2024-02-04" />
 
 <title>010_map_headers.R</title>
 
@@ -351,8 +351,8 @@ display: none;
 
 
 <h1 class="title toc-ignore">010_map_headers.R</h1>
-<h4 class="author">Adam</h4>
-<h4 class="date">2024-01-21</h4>
+<h4 class="author">Adam.Rich</h4>
+<h4 class="date">2024-02-04</h4>
 
 </div>
 
@@ -379,7 +379,11 @@ display: none;
 ## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     ifelse</code></pre>
-<pre class="r"><code># Variables that might change year-to-year
+<pre class="r"><code># Install alrtools from https://github.com/adamleerich/alrtools
+# devtools::install_github(&#39;adamleerich/alrtools&#39;)
+
+
+# Variables that might change year-to-year
 years &lt;- c(2021:2023)
 map &lt;- read.csv(&#39;raw_data/header-map-4.csv&#39;)
 raw_data_stem &lt;- &#39;raw_data/technology_survey_responses_&#39; # &amp;year

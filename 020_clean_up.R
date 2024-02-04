@@ -53,6 +53,148 @@ d$designation_fcas[d$designation == 'FCAS'] <- 'FCAS'
 d$designation_cspa[d$designation == 'CSPA'] <- 'CSPA'
 
 
+
+# Fix suited other columns
+#
+#   Combine 2022 suited_Other and 2023 suited_Other_specific
+#   There are free text fields
+#
+#   Have expected suited level set:
+#     2023 suited_ratemaking_Other
+#     2023 suited_reserving_Other
+#     2023 suited_capital_modeling_Other
+#
+#   Everything else should be NA!
+#
+
+# d_suited__long <- d %>% 
+#   mutate(ID = 1:nrow(d)) %>% 
+#   select(
+#     year,
+#     ID,
+#     suited_Other,
+#     suited_ratemaking_Other,
+#     suited_reserving_Other,
+#     suited_capital_modeling_Other,
+#     suited_Other_specific) %>% 
+#   pivot_longer(
+#     cols = -c('year', 'ID')) %>% 
+#   mutate(
+#     new_col = paste0(name, '__', year)) %>% 
+#   select(-name)
+# 
+# d_suited__wide <- d_suited__long %>% 
+#   pivot_wider(
+#     id_cols = c('ID', 'year'), 
+#     names_from = new_col,
+#     values_from = value)
+# 
+# d_suited__wide__info <- info(d_suited__wide)
+# 
+# d_suited__wide__info %>% 
+#   filter(unique_values > 0) %>% 
+#   select(column, levels)
+# 
+# d_suited__wide__info %>% 
+#   filter(unique_values == 0) %>% 
+#   select(column)
+# 
+# # Check that expected column/year combos are all NA!
+# # This should have ZERO rows
+# should_be_NA <- d_suited__long %>% 
+#   filter(!is.na(value), new_col %in% c(
+#     'suited_Other__2021',
+#     'suited_ratemaking_Other__2021',
+#     'suited_reserving_Other__2021',
+#     'suited_capital_modeling_Other__2021',
+#     'suited_Other_specific__2021',
+#     'suited_ratemaking_Other__2022',
+#     'suited_reserving_Other__2022',
+#     'suited_capital_modeling_Other__2022',
+#     'suited_Other_specific__2022',
+#     'suited_Other__2023'))
+#            
+# stopifnot(nrow(should_be_NA) == 0)
+
+d$suited_Other_specific <- ifelse(
+  d$year == 2022, 
+  d$suited_Other,
+  d$suited_Other_specific)
+
+d$suited_Other <- NA
+
+
+
+
+# Fix "other specific" columns
+# In 2021-2022, "other" columns were free-text
+# In 2023, the questions were renamed to be "Other_specific"
+# The old questions were retained as radio options for freq, usefulness, etc.
+# We put the free-form answers from 2021-2022 into the "Other_specific" cols
+
+# d_specific__long <- d %>%
+#   mutate(ID = 1:nrow(d)) %>%
+#   select(
+#     year,
+#     ID,
+#     how_often_use_Other,
+#     how_often_use_Other_specific,
+#     how_proficient_Other,
+#     how_proficient_Other_specific) %>%
+#   pivot_longer(
+#     cols = -c('year', 'ID')) %>%
+#   mutate(
+#     new_col = paste0(name, '__', year)) %>%
+#   select(-name)
+# 
+# d_specific__wide <- d_specific__long %>%
+#   pivot_wider(
+#     id_cols = c('ID', 'year'),
+#     names_from = new_col,
+#     values_from = value)
+# 
+# d_specific__wide__info <- info(d_specific__wide)
+# 
+# d_specific__wide__info %>%
+#   filter(unique_values > 0) %>%
+#   select(column, levels)
+# 
+# d_specific__wide__info %>%
+#   filter(unique_values == 0) %>%
+#   select(column)
+# 
+# # Check that expected column/year combos are all NA!
+# # This should have ZERO rows
+# should_be_NA <- d_specific__long %>%
+#   filter(!is.na(value), new_col %in% c(
+#     'how_often_use_Other__2021',
+#     'how_often_use_Other_specific__2021',
+#     'how_proficient_Other__2021',
+#     'how_proficient_Other_specific__2021',
+#     'how_often_use_Other_specific__2022',
+#     'how_proficient_Other_specific__2022'))
+# 
+# stopifnot(nrow(should_be_NA) == 0)
+
+d$how_proficient_Other_specific <- ifelse(
+  d$year <= 2022, 
+  d$how_proficient_Other,
+  d$how_proficient_Other_specific)
+
+d$how_often_use_Other_specific <- ifelse(
+  d$year <= 2022, 
+  d$how_often_use_Other,
+  d$how_often_use_Other_specific)
+
+d$how_proficient_Other[d$year <= 2022] <- NA
+d$how_often_use_Other[d$year <= 2022] <- NA
+
+
+
+
+
+
+
 ## Classify each column and make sure we've covered all of them
 
 qs_ID <- c('year', 'row')
@@ -63,15 +205,8 @@ qs_ignore <- c(
   'ok_with_being_contacted', 'collector_id', 'ip_address', 'respondent_id', 
   'start_date', 'end_date', 
   # Exploded in 2023
-  'designation', 
-  # Removed in 2022
-  'how_often_use_MATLAB', 
-  'how_proficient_MATLAB', 'suited_ratemaking_MATLAB', 
-  'suited_reserving_MATLAB', 'suited_capital_modeling_MATLAB', 
-  'increase_proficiency_MATLAB', 
-  # Removed in 2023
-  'technique_use_bornhuetter_ferguson', 
-  'technique_use_chain_ladder', 
+  'designation',
+  # All NAs
   'suited_Other')
 
 ## Columns with the following value set:
@@ -85,7 +220,8 @@ qs_ignore <- c(
 qs_how_often <- c(
   'how_often_use_R', 'how_often_use_Excel', 'how_often_use_GoogleSheets', 
   'how_often_use_SAS', 'how_often_use_Python', 'how_often_use_Tableau', 
-  'how_often_use_PowerBI', 'how_often_use_SQL')
+  'how_often_use_PowerBI', 'how_often_use_SQL', 'how_often_use_MATLAB',
+  'how_often_use_Other')
 
 ## Columns with the following value set:
 ##   Advanced
@@ -96,7 +232,8 @@ qs_how_often <- c(
 qs_proficient <- c(
   'how_proficient_R', 'how_proficient_Excel', 'how_proficient_GoogleSheets', 
   'how_proficient_SAS', 'how_proficient_Python', 'how_proficient_Tableau', 
-  'how_proficient_PowerBI', 'how_proficient_SQL')
+  'how_proficient_PowerBI', 'how_proficient_SQL', 'how_proficient_MATLAB',
+  'how_proficient_Other')
 
 
 ## Columns with the following value set:
@@ -118,7 +255,9 @@ qs_suited <- c(
   'suited_reserving_PowerBI', 'suited_capital_modeling_PowerBI', 
   'suited_ratemaking_SQL', 'suited_reserving_SQL', 
   'suited_capital_modeling_SQL', 'suited_ratemaking_Other', 
-  'suited_reserving_Other', 'suited_capital_modeling_Other')
+  'suited_reserving_Other', 'suited_capital_modeling_Other', 
+  'suited_ratemaking_MATLAB', 'suited_reserving_MATLAB', 
+  'suited_capital_modeling_MATLAB')
 
 ## Single values: will convert to logical
 qs_logical <- c(
@@ -148,7 +287,8 @@ qs_logical <- c(
   'barrier_technique_lack_of_it_support', 'barrier_technique_financial_cost', 
   'barrier_technique_not_enough_time', 'barrier_technique_no_perceived_benefit', 
   'barrier_technique_lack_of_knowledge', 'learning_plan_self_study', 
-  'learning_plan_online', 'learning_plan_in_person')
+  'learning_plan_online', 'learning_plan_in_person', 'increase_proficiency_MATLAB',
+  'technique_use_bornhuetter_ferguson', 'technique_use_chain_ladder')
 
 
 ## Unique domains
@@ -179,8 +319,11 @@ qs_expected <- c(
   qs_demo,
   qs_freetext)
 
-setdiff(names(d), qs_expected)
-setdiff(qs_expected, names(d))
+stopifnot(
+  length(setdiff(names(d), qs_expected)) + 
+    length(setdiff(qs_expected, names(d))) == 0
+)
+
 
 
 
