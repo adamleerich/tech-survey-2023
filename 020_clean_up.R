@@ -197,12 +197,12 @@ d$how_often_use_Other[d$year <= 2022] <- NA
 
 ## Classify each column and make sure we've covered all of them
 
-qs_ID <- c('year', 'row')
+qs_ID <- c('year', 'row', 'respondent_id')
 
 qs_ignore <- c(
   # No analysis value
   'email_address', 'first_name', 'last_name', 'custom_data_1', 
-  'ok_with_being_contacted', 'collector_id', 'ip_address', 'respondent_id', 
+  'ok_with_being_contacted', 'collector_id', 'ip_address',  
   'start_date', 'end_date', 
   # Exploded in 2023
   'designation',
