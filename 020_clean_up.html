@@ -11,7 +11,7 @@
 
 <meta name="author" content="Adam.Rich" />
 
-<meta name="date" content="2024-02-04" />
+<meta name="date" content="2024-02-05" />
 
 <title>020_clean_up.R</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">020_clean_up.R</h1>
 <h4 class="author">Adam.Rich</h4>
-<h4 class="date">2024-02-04</h4>
+<h4 class="date">2024-02-05</h4>
 
 </div>
 
@@ -459,6 +459,8 @@ d$designation_none[d$designation == &#39;None yet&#39;] &lt;- &#39;None yet&#39;
 d$designation_acas[d$designation == &#39;ACAS&#39;] &lt;- &#39;ACAS&#39;
 d$designation_fcas[d$designation == &#39;FCAS&#39;] &lt;- &#39;FCAS&#39;
 d$designation_cspa[d$designation == &#39;CSPA&#39;] &lt;- &#39;CSPA&#39;
+
+
 
 
 
@@ -605,17 +607,25 @@ d$how_often_use_Other[d$year &lt;= 2022] &lt;- NA
 
 ## Classify each column and make sure we&#39;ve covered all of them
 
-qs_ID &lt;- c(&#39;year&#39;, &#39;row&#39;, &#39;respondent_id&#39;)
+qs_ID &lt;- c(&#39;year&#39;, &#39;row&#39;)
 
 qs_ignore &lt;- c(
   # No analysis value
-  &#39;email_address&#39;, &#39;first_name&#39;, &#39;last_name&#39;, &#39;custom_data_1&#39;, 
-  &#39;ok_with_being_contacted&#39;, &#39;collector_id&#39;, &#39;ip_address&#39;,  
-  &#39;start_date&#39;, &#39;end_date&#39;, 
+  &#39;email_address&#39;, 
+  &#39;first_name&#39;, 
+  &#39;last_name&#39;, 
+  &#39;custom_data_1&#39;, 
+  &#39;ok_with_being_contacted&#39;, 
+  &#39;collector_id&#39;, 
+  &#39;ip_address&#39;,  
+  &#39;start_date&#39;, 
+  &#39;end_date&#39;, 
   # Exploded in 2023
   &#39;designation&#39;,
   # All NAs
-  &#39;suited_Other&#39;)
+  &#39;suited_Other&#39;,
+  # Respondent ID is broken because of sci notation
+  &#39;respondent_id&#39;)
 
 ## Columns with the following value set:
 ##   About once a month      (2021 only)
@@ -626,9 +636,15 @@ qs_ignore &lt;- c(
 ##   Less than once a month
 ##   Not at all
 qs_how_often &lt;- c(
-  &#39;how_often_use_R&#39;, &#39;how_often_use_Excel&#39;, &#39;how_often_use_GoogleSheets&#39;, 
-  &#39;how_often_use_SAS&#39;, &#39;how_often_use_Python&#39;, &#39;how_often_use_Tableau&#39;, 
-  &#39;how_often_use_PowerBI&#39;, &#39;how_often_use_SQL&#39;, &#39;how_often_use_MATLAB&#39;,
+  &#39;how_often_use_R&#39;, 
+  &#39;how_often_use_Excel&#39;, 
+  &#39;how_often_use_GoogleSheets&#39;, 
+  &#39;how_often_use_SAS&#39;, 
+  &#39;how_often_use_Python&#39;, 
+  &#39;how_often_use_Tableau&#39;, 
+  &#39;how_often_use_PowerBI&#39;, 
+  &#39;how_often_use_SQL&#39;, 
+  &#39;how_often_use_MATLAB&#39;,
   &#39;how_often_use_Other&#39;)
 
 ## Columns with the following value set:
@@ -638,9 +654,15 @@ qs_how_often &lt;- c(
 ##   Intermediate
 ##   Not at all
 qs_proficient &lt;- c(
-  &#39;how_proficient_R&#39;, &#39;how_proficient_Excel&#39;, &#39;how_proficient_GoogleSheets&#39;, 
-  &#39;how_proficient_SAS&#39;, &#39;how_proficient_Python&#39;, &#39;how_proficient_Tableau&#39;, 
-  &#39;how_proficient_PowerBI&#39;, &#39;how_proficient_SQL&#39;, &#39;how_proficient_MATLAB&#39;,
+  &#39;how_proficient_R&#39;, 
+  &#39;how_proficient_Excel&#39;, 
+  &#39;how_proficient_GoogleSheets&#39;, 
+  &#39;how_proficient_SAS&#39;, 
+  &#39;how_proficient_Python&#39;, 
+  &#39;how_proficient_Tableau&#39;, 
+  &#39;how_proficient_PowerBI&#39;, 
+  &#39;how_proficient_SQL&#39;, 
+  &#39;how_proficient_MATLAB&#39;,
   &#39;how_proficient_Other&#39;)
 
 
@@ -651,69 +673,124 @@ qs_proficient &lt;- c(
 ##   Very much    (2023 only)
 ##   Very much so (2021-2022)
 qs_suited &lt;- c(
-  &#39;suited_ratemaking_R&#39;, &#39;suited_reserving_R&#39;, &#39;suited_capital_modeling_R&#39;, 
-  &#39;suited_ratemaking_Excel&#39;, &#39;suited_reserving_Excel&#39;, 
-  &#39;suited_capital_modeling_Excel&#39;, &#39;suited_ratemaking_GoogleSheets&#39;, 
-  &#39;suited_reserving_GoogleSheets&#39;, &#39;suited_capital_modeling_GoogleSheets&#39;, 
-  &#39;suited_ratemaking_SAS&#39;, &#39;suited_reserving_SAS&#39;, 
-  &#39;suited_capital_modeling_SAS&#39;, &#39;suited_ratemaking_Python&#39;, 
-  &#39;suited_reserving_Python&#39;, &#39;suited_capital_modeling_Python&#39;, 
-  &#39;suited_ratemaking_Tableau&#39;, &#39;suited_reserving_Tableau&#39;, 
-  &#39;suited_capital_modeling_Tableau&#39;, &#39;suited_ratemaking_PowerBI&#39;, 
-  &#39;suited_reserving_PowerBI&#39;, &#39;suited_capital_modeling_PowerBI&#39;, 
-  &#39;suited_ratemaking_SQL&#39;, &#39;suited_reserving_SQL&#39;, 
-  &#39;suited_capital_modeling_SQL&#39;, &#39;suited_ratemaking_Other&#39;, 
-  &#39;suited_reserving_Other&#39;, &#39;suited_capital_modeling_Other&#39;, 
-  &#39;suited_ratemaking_MATLAB&#39;, &#39;suited_reserving_MATLAB&#39;, 
+  &#39;suited_ratemaking_R&#39;, 
+  &#39;suited_reserving_R&#39;, 
+  &#39;suited_capital_modeling_R&#39;, 
+  &#39;suited_ratemaking_Excel&#39;, 
+  &#39;suited_reserving_Excel&#39;, 
+  &#39;suited_capital_modeling_Excel&#39;, 
+  &#39;suited_ratemaking_GoogleSheets&#39;, 
+  &#39;suited_reserving_GoogleSheets&#39;, 
+  &#39;suited_capital_modeling_GoogleSheets&#39;, 
+  &#39;suited_ratemaking_SAS&#39;, 
+  &#39;suited_reserving_SAS&#39;, 
+  &#39;suited_capital_modeling_SAS&#39;, 
+  &#39;suited_ratemaking_Python&#39;, 
+  &#39;suited_reserving_Python&#39;, 
+  &#39;suited_capital_modeling_Python&#39;, 
+  &#39;suited_ratemaking_Tableau&#39;, 
+  &#39;suited_reserving_Tableau&#39;, 
+  &#39;suited_capital_modeling_Tableau&#39;, 
+  &#39;suited_ratemaking_PowerBI&#39;, 
+  &#39;suited_reserving_PowerBI&#39;, 
+  &#39;suited_capital_modeling_PowerBI&#39;, 
+  &#39;suited_ratemaking_SQL&#39;, 
+  &#39;suited_reserving_SQL&#39;, 
+  &#39;suited_capital_modeling_SQL&#39;, 
+  &#39;suited_ratemaking_Other&#39;, 
+  &#39;suited_reserving_Other&#39;, 
+  &#39;suited_capital_modeling_Other&#39;, 
+  &#39;suited_ratemaking_MATLAB&#39;, 
+  &#39;suited_reserving_MATLAB&#39;, 
   &#39;suited_capital_modeling_MATLAB&#39;)
 
 ## Single values: will convert to logical
 qs_logical &lt;- c(
-  &#39;increase_proficiency_R&#39;, &#39;increase_proficiency_Excel&#39;, 
-  &#39;increase_proficiency_GoogleSheets&#39;, &#39;increase_proficiency_SAS&#39;, 
-  &#39;increase_proficiency_Python&#39;, &#39;increase_proficiency_Tableau&#39;, 
-  &#39;increase_proficiency_PowerBI&#39;, &#39;increase_proficiency_SQL&#39;, 
+  &#39;increase_proficiency_R&#39;, 
+  &#39;increase_proficiency_Excel&#39;, 
+  &#39;increase_proficiency_GoogleSheets&#39;, 
+  &#39;increase_proficiency_SAS&#39;, 
+  &#39;increase_proficiency_Python&#39;, 
+  &#39;increase_proficiency_Tableau&#39;, 
+  &#39;increase_proficiency_PowerBI&#39;, 
+  &#39;increase_proficiency_SQL&#39;, 
+  &#39;increase_proficiency_MATLAB&#39;,
+  
   &#39;barrier_learning_inadequate_staff&#39;, 
   &#39;barrier_learning_lack_of_management_support&#39;, 
-  &#39;barrier_learning_lack_of_it_support&#39;, &#39;barrier_learning_financial_cost&#39;, 
-  &#39;barrier_learning_not_enough_time&#39;, &#39;barrier_learning_no_perceived_benefit&#39;, 
+  &#39;barrier_learning_lack_of_it_support&#39;, 
+  &#39;barrier_learning_financial_cost&#39;, 
+  &#39;barrier_learning_not_enough_time&#39;, 
+  &#39;barrier_learning_no_perceived_benefit&#39;, 
+  
   &#39;barrier_implementation_inadequate_staff&#39;, 
   &#39;barrier_implementation_lack_of_management_support&#39;, 
   &#39;barrier_implementation_lack_of_it_support&#39;, 
   &#39;barrier_implementation_financial_cost&#39;, 
   &#39;barrier_implementation_not_enough_time&#39;, 
   &#39;barrier_implementation_no_perceived_benefit&#39;, 
-  &#39;technique_use_linear_models&#39;, &#39;technique_use_credibility&#39;, 
-  &#39;technique_use_premium_adjustment&#39;, &#39;technique_use_excess_loss_analysis&#39;, 
-  &#39;technique_use_bayesian&#39;, &#39;technique_use_time_series&#39;, 
-  &#39;technique_use_aideep_learning&#39;, &#39;technique_use_tree_based_methods&#39;, 
-  &#39;technique_use_unsupervised_learning&#39;, &#39;technique_use_frequency_severity&#39;, 
-  &#39;technique_use_triangle_based&#39;, &#39;technique_use_simulation&#39;, 
-  &#39;designation_none&#39;, &#39;designation_acas&#39;, &#39;designation_fcas&#39;, 
-  &#39;designation_cspa&#39;, &#39;barrier_technique_inadequate_staff&#39;, 
+  
+  &#39;technique_use_linear_models&#39;, 
+  &#39;technique_use_credibility&#39;, 
+  &#39;technique_use_premium_adjustment&#39;, 
+  &#39;technique_use_excess_loss_analysis&#39;, 
+  &#39;technique_use_bayesian&#39;, 
+  &#39;technique_use_time_series&#39;, 
+  &#39;technique_use_aideep_learning&#39;, 
+  &#39;technique_use_tree_based_methods&#39;, 
+  &#39;technique_use_unsupervised_learning&#39;, 
+  &#39;technique_use_frequency_severity&#39;, 
+  &#39;technique_use_triangle_based&#39;, 
+  &#39;technique_use_simulation&#39;, 
+  &#39;technique_use_bornhuetter_ferguson&#39;, 
+  &#39;technique_use_chain_ladder&#39;,
+  
+  &#39;designation_none&#39;, 
+  &#39;designation_acas&#39;, 
+  &#39;designation_fcas&#39;, 
+  &#39;designation_cspa&#39;, 
+  
+  &#39;barrier_technique_inadequate_staff&#39;, 
   &#39;barrier_technique_lack_of_management_support&#39;, 
-  &#39;barrier_technique_lack_of_it_support&#39;, &#39;barrier_technique_financial_cost&#39;, 
-  &#39;barrier_technique_not_enough_time&#39;, &#39;barrier_technique_no_perceived_benefit&#39;, 
-  &#39;barrier_technique_lack_of_knowledge&#39;, &#39;learning_plan_self_study&#39;, 
-  &#39;learning_plan_online&#39;, &#39;learning_plan_in_person&#39;, &#39;increase_proficiency_MATLAB&#39;,
-  &#39;technique_use_bornhuetter_ferguson&#39;, &#39;technique_use_chain_ladder&#39;)
+  &#39;barrier_technique_lack_of_it_support&#39;, 
+  &#39;barrier_technique_financial_cost&#39;, 
+  &#39;barrier_technique_not_enough_time&#39;, 
+  &#39;barrier_technique_no_perceived_benefit&#39;, 
+  &#39;barrier_technique_lack_of_knowledge&#39;, 
+  
+  &#39;learning_plan_self_study&#39;, 
+  &#39;learning_plan_online&#39;, 
+  &#39;learning_plan_in_person&#39;)
 
 
 ## Unique domains
 qs_demo &lt;- c(
-  &#39;age&#39;, &#39;where_are_you_located&#39;, &#39;what_type_of_company_do_you_work_for&#39;, 
-  &#39;years_of_experience&#39;, &#39;actuaries_at_my_organization&#39;)
+  &#39;age&#39;, 
+  &#39;where_are_you_located&#39;, 
+  &#39;what_type_of_company_do_you_work_for&#39;, 
+  &#39;years_of_experience&#39;, 
+  &#39;actuaries_at_my_organization&#39;)
 
 
 ## Free-text fields
 qs_freetext &lt;- c(
-  &#39;what_other_tools_should_be_added&#39;, &#39;increase_proficiency_other&#39;, 
-  &#39;barrier_learning_other&#39;, &#39;barrier_implementation_other&#39;, 
-  &#39;technique_use_other&#39;, &#39;additional_comments&#39;, &#39;located_other&#39;, 
-  &#39;type_of_company_other&#39;, &#39;how_often_use_Other&#39;, &#39;how_proficient_Other&#39;, 
-  &#39;barrier_technique_other&#39;, &#39;new_tech_to_adopt&#39;, &#39;should_have_asked&#39;, 
-  &#39;how_often_use_Other_specific&#39;, &#39;how_proficient_Other_specific&#39;, 
-  &#39;suited_Other_specific&#39;, &#39;learning_plan_other&#39;)
+  &#39;what_other_tools_should_be_added&#39;, 
+  &#39;increase_proficiency_other&#39;, 
+  &#39;barrier_learning_other&#39;, 
+  &#39;barrier_implementation_other&#39;, 
+  &#39;technique_use_other&#39;, 
+  &#39;additional_comments&#39;, 
+  &#39;located_other&#39;, 
+  &#39;type_of_company_other&#39;, 
+  &#39;how_often_use_Other&#39;, 
+  &#39;how_proficient_Other&#39;, 
+  &#39;barrier_technique_other&#39;, 
+  &#39;new_tech_to_adopt&#39;, 
+  &#39;should_have_asked&#39;, 
+  &#39;how_often_use_Other_specific&#39;, 
+  &#39;how_proficient_Other_specific&#39;, 
+  &#39;suited_Other_specific&#39;, 
+  &#39;learning_plan_other&#39;)
 
 
 ## Check that all columns have been classified
@@ -943,6 +1020,41 @@ d$actuaries_at_my_organization &lt;- map_to_factor(
   d$actuaries_at_my_organization, map_from, map_to)
 
 
+## Step 11: add back in 1 column for actuarial designation
+d$actuarial_credential &lt;- ifelse(
+  d$designation_fcas, &#39;FCAS&#39;, ifelse(
+    d$designation_acas, &#39;ACAS&#39;, ifelse(
+      d$designation_cspa, &#39;CSPA&#39;, &#39;None&#39;) ) ) %&gt;% 
+  factor(levels = c(&#39;None&#39;, &#39;ACAS&#39;, &#39;FCAS&#39;))
+
+d %&gt;% 
+  group_by(
+    designation_none,
+    designation_acas,
+    designation_fcas,
+    designation_cspa,
+    actuarial_credential) %&gt;% 
+  summarize(count = n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;designation_none&#39;, &#39;designation_acas&#39;,
+## &#39;designation_fcas&#39;, &#39;designation_cspa&#39;. You can override using the `.groups`
+## argument.</code></pre>
+<pre><code>## # A tibble: 6 × 6
+## # Groups:   designation_none, designation_acas, designation_fcas,
+## #   designation_cspa [6]
+##   designation_none designation_acas designation_fcas designation_cspa
+##   &lt;lgl&gt;            &lt;lgl&gt;            &lt;lgl&gt;            &lt;lgl&gt;           
+## 1 FALSE            FALSE            FALSE            FALSE           
+## 2 FALSE            FALSE            TRUE             FALSE           
+## 3 FALSE            FALSE            TRUE             TRUE            
+## 4 FALSE            TRUE             FALSE            FALSE           
+## 5 FALSE            TRUE             FALSE            TRUE            
+## 6 TRUE             FALSE            FALSE            FALSE           
+## # ℹ 2 more variables: actuarial_credential &lt;fct&gt;, count &lt;int&gt;</code></pre>
+<pre class="r"><code>## Step 12: create a synthetic respondent ID
+d$respondent_id &lt;- d$year * 100e3 + d$row
+
+
+
 # info(d) %&gt;% clipr::write_clip()
 # 
 # ## Check that all levels EXCLUDE NA
@@ -971,6 +1083,8 @@ d$actuaries_at_my_organization &lt;- map_to_factor(
 # answer_count_by_year_and_question %&gt;% filter(`2022` == 0)
 # answer_count_by_year_and_question %&gt;% filter(`2023` == 0)
 # 
+
+
 
 readr::write_rds(d, file = rds_out)
 readr::write_csv(d, file = csv_out)</code></pre>
