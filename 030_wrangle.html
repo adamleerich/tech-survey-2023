@@ -11,7 +11,7 @@
 
 <meta name="author" content="Adam.Rich" />
 
-<meta name="date" content="2024-02-05" />
+<meta name="date" content="2024-02-06" />
 
 <title>030_wrangle.R</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">030_wrangle.R</h1>
 <h4 class="author">Adam.Rich</h4>
-<h4 class="date">2024-02-05</h4>
+<h4 class="date">2024-02-06</h4>
 
 </div>
 
@@ -671,15 +671,15 @@ tbl_suitability %&gt;%
 <pre><code>## # A tibble: 9 × 8
 ##   year_area            Excel MATLAB Python     R   SAS   SQL Tableau
 ##   &lt;chr&gt;                &lt;int&gt;  &lt;int&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;
-## 1 Capital Modeling2021   729    134    363   468   404   524     397
-## 2 Ratemaking2021        1133    181    607   835   753   889     678
-## 3 Reserving2021         1026    162    495   690   607   769     580
-## 4 Capital Modeling2022   373     NA    213   102   214   259     192
-## 5 Ratemaking2022         585     NA    332   198   368   452     336
-## 6 Reserving2022          540     NA    275   166   318   408     281
-## 7 Capital Modeling2023   448     NA    263   280   252   314     246
-## 8 Ratemaking2023         701     NA    459   510   459   574     416
-## 9 Reserving2023          654     NA    364   419   369   503     367</code></pre>
+## 1 Capital Modeling2021  1046    974    984  1015   993   991     978
+## 2 Ratemaking2021        1152   1049   1061  1106  1079  1078    1063
+## 3 Reserving2021         1095    994   1002  1042  1022  1020    1007
+## 4 Capital Modeling2022   562     NA    523   242   527   521     521
+## 5 Ratemaking2022         599     NA    559   255   563   555     555
+## 6 Reserving2022          583     NA    539   247   544   538     535
+## 7 Capital Modeling2023   650     NA    607   632   609   611     603
+## 8 Ratemaking2023         710     NA    661   689   664   675     657
+## 9 Reserving2023          691     NA    632   662   638   646     634</code></pre>
 <pre class="r"><code>tbl_techniques &lt;- tbl_responses %&gt;%
   select(
     respondent_id, 

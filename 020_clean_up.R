@@ -478,7 +478,8 @@ map_to <- c(
   'Very',
   'Very',
   'Somewhat',
-  'Not', NA)
+  'Not', 
+  'Unsure')
 
 for (i in 1:length(qs_suited)) {
   q <- qs_suited[i]
