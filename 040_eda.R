@@ -319,12 +319,18 @@ tbl_summary_by_designation <- map_dfr(levels(tbl_responses$designation), functio
           fct_rev()
   ) 
 
-plt_usage_by_designation <- tbl_summary_by_designation %>%  
-  ggplot(aes(designation, n_total, fill = usage_frequency)) %>% 
-  plot_usage_by_category()
-
-plt_usage_by_designation +
-  coord_flip()
+for(i in 1:length(years)) {
+  plot_title <- paste("Usage By Designation For", years[i])
+  
+  plt_usage_by_designation <- tbl_summary_by_designation %>%  
+    filter(year == years[i]) %>%
+    ggplot(aes(designation, n_total, fill = usage_frequency)) %>% 
+    plot_usage_by_category() +
+    coord_flip() +
+    ggtitle(plot_title, subtitle = waiver())
+  
+  print(plt_usage_by_designation)
+}
 
 
 ## ----------------------------------------------------------------------------------------------------------------------
