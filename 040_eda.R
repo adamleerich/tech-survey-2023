@@ -336,11 +336,11 @@ for(i in 1:length(years)) {
 ## ----------------------------------------------------------------------------------------------------------------------
 tbl_polyglot <- tbl_respondent_tool %>% 
   filter(!is.na(usage_frequency)) %>% 
-  group_by(respondent_id) %>% 
+  group_by(year, respondent_id) %>% 
   summarise(
     n_tools = sum(usage_frequency != 'Never')
   ) %>% 
-  group_by(n_tools) %>% 
+  group_by(year, n_tools) %>% 
   summarise(
     total_users = n()
   ) %>% 
@@ -348,18 +348,26 @@ tbl_polyglot <- tbl_respondent_tool %>%
     pct_users = total_users / sum(total_users)
   )
 
+# pct_check
+tbl_polyglot %>%
+  group_by(year) %>%
+  summarize(pct_users = sum(pct_users))
 
 ## ----------------------------------------------------------------------------------------------------------------------
+plot_title <- "Polyglot Usage Non-Never"
+
 plt_polyglot <- tbl_polyglot %>% 
+  #filter(year == years[i]) %>%
   ggplot(aes(n_tools, pct_users)) +
+  facet_grid(rows = vars(year)) +
   geom_bar(stat = 'identity', fill = bar_fill_colors[5]) +
   labs(x = "# of tools", y = "% of respondents") +
   scale_x_continuous(breaks = 1:9, labels = 1:9 %>% as.character()) +
   scale_y_continuous(labels = scales::percent) +
+  ggtitle(plot_title, subtitle = waiver()) +
   theme_minimal()
 
 plt_polyglot
-
 
 ## ----------------------------------------------------------------------------------------------------------------------
 tbl_polyglot_ge_week <- tbl_respondent_tool %>% 
