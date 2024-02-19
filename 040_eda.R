@@ -227,20 +227,24 @@ f_unused_tools <- tbl_usage_summary %>%
 
 # setdiff(tbl_respondent_tool$tool, f_unused_tools)
 
-
-plt_basic_usage <- tbl_usage_summary %>% 
-  mutate(
-    n_total = n_total * ifelse(
-      usage_frequency == 'Never'
-      , -1
-      , 1)
-  ) %>%
-  mutate(
-    tool = tool %>% fct_relevel(f_unused_tools)
-  ) %>% 
-  plt_usage_summary()
-
-plt_basic_usage 
+# Kevin tried adding facet_wrap in plt_usage_summary,
+# but it didn't look good
+for(i in 1:length(years)) {
+  plt_basic_usage <- tbl_usage_summary %>% 
+    filter(year == years[i]) %>%
+    mutate(
+      n_total = n_total * ifelse(
+        usage_frequency == 'Never'
+        , -1
+        , 1)
+    ) %>%
+    mutate(
+      tool = tool %>% fct_relevel(f_unused_tools)
+    ) %>% 
+    plt_usage_summary()
+  
+  print(plt_basic_usage)
+}
 
 
 
