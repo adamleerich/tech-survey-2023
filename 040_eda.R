@@ -230,6 +230,8 @@ f_unused_tools <- tbl_usage_summary %>%
 # Kevin tried adding facet_wrap in plt_usage_summary,
 # but it didn't look good
 for(i in 1:length(years)) {
+  plot_title <- paste("Basic Usage For", years[i])
+  
   plt_basic_usage <- tbl_usage_summary %>% 
     filter(year == years[i]) %>%
     mutate(
@@ -241,7 +243,8 @@ for(i in 1:length(years)) {
     mutate(
       tool = tool %>% fct_relevel(f_unused_tools)
     ) %>% 
-    plt_usage_summary()
+    plt_usage_summary() +
+    ggtitle(plot_title, subtitle = waiver())
   
   print(plt_basic_usage)
 }
@@ -283,12 +286,18 @@ plot_usage_by_category <- function(plt_in){
   scale_y_continuous(labels = scales::percent, breaks = c(0, 0.5, 1))
 }
 
-plt_usage_by_age <- tbl_summary_by_age %>%  
-  ggplot(aes(age, n_total, fill = usage_frequency)) %>% 
-  plot_usage_by_category()
+for(i in 1:length(years)) {
+  plot_title <- paste("Usage By Age For", years[i])
   
-plt_usage_by_age + 
-  coord_flip()
+  plt_usage_by_age <- tbl_summary_by_age %>%  
+    filter(year == years[i]) %>%
+    ggplot(aes(age, n_total, fill = usage_frequency)) %>% 
+    plot_usage_by_category() +
+    coord_flip() +
+    ggtitle(plot_title, subtitle = waiver())
+  
+  print(plt_usage_by_age)
+}
 
 
 ## ----------------------------------------------------------------------------------------------------------------------
