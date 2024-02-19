@@ -28,6 +28,8 @@ tbl_responses$designation <- tbl_responses$actuarial_credential
 tbl_demographic$designation <- tbl_demographic$actuarial_credential
 tbl_respondent_tool$designation <- tbl_respondent_tool$actuarial_credential
 
+years <- sort(unique(tbl_responses$year))
+
 
 ## ----------------------------------------------------------------------------------------------------------------------
 tbl_respondents <- tbl_responses %>% 
@@ -157,6 +159,7 @@ tbl_usage_summary %>%
   filter(tool == 'R') %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = usage_frequency)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -166,6 +169,7 @@ tbl_usage_summary %>%
   filter(!tool %in% c('Excel', 'MATLAB')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -175,6 +179,7 @@ tbl_usage_summary %>%
   filter(!tool %in% c('Excel', 'MATLAB', 'SQL')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -184,6 +189,7 @@ tbl_usage_summary %>%
   filter(tool %in% c('Excel', 'SQL')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -193,6 +199,7 @@ tbl_usage_summary %>%
   filter(!tool %in% c('Excel', 'MATLAB', 'SQL')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -205,6 +212,7 @@ plt_usage_summary <- function(tbl_summary_in){
   tbl_summary_in %>% 
     ggplot(aes(tool, n_total, fill = usage_frequency)) %>% 
     augment_shifted_stack(f_usage) +
+    facet_grid(rows = vars(year)) +
     labs(fill = "Frequency")
 }
 
@@ -219,20 +227,27 @@ f_unused_tools <- tbl_usage_summary %>%
 
 # setdiff(tbl_respondent_tool$tool, f_unused_tools)
 
-
-plt_basic_usage <- tbl_usage_summary %>% 
-  mutate(
-    n_total = n_total * ifelse(
-      usage_frequency == 'Never'
-      , -1
-      , 1)
-  ) %>%
-  mutate(
-    tool = tool %>% fct_relevel(f_unused_tools)
-  ) %>% 
-  plt_usage_summary()
-
-plt_basic_usage 
+# Kevin tried adding facet_wrap in plt_usage_summary,
+# but it didn't look good
+for(i in 1:length(years)) {
+  plot_title <- paste("Basic Usage For", years[i])
+  
+  plt_basic_usage <- tbl_usage_summary %>% 
+    filter(year == years[i]) %>%
+    mutate(
+      n_total = n_total * ifelse(
+        usage_frequency == 'Never'
+        , -1
+        , 1)
+    ) %>%
+    mutate(
+      tool = tool %>% fct_relevel(f_unused_tools)
+    ) %>% 
+    plt_usage_summary() +
+    ggtitle(plot_title, subtitle = waiver())
+  
+  print(plt_basic_usage)
+}
 
 
 
@@ -271,12 +286,18 @@ plot_usage_by_category <- function(plt_in){
   scale_y_continuous(labels = scales::percent, breaks = c(0, 0.5, 1))
 }
 
-plt_usage_by_age <- tbl_summary_by_age %>%  
-  ggplot(aes(age, n_total, fill = usage_frequency)) %>% 
-  plot_usage_by_category()
+for(i in 1:length(years)) {
+  plot_title <- paste("Usage By Age For", years[i])
   
-plt_usage_by_age + 
-  coord_flip()
+  plt_usage_by_age <- tbl_summary_by_age %>%  
+    filter(year == years[i]) %>%
+    ggplot(aes(age, n_total, fill = usage_frequency)) %>% 
+    plot_usage_by_category() +
+    coord_flip() +
+    ggtitle(plot_title, subtitle = waiver())
+  
+  print(plt_usage_by_age)
+}
 
 
 ## ----------------------------------------------------------------------------------------------------------------------
@@ -298,22 +319,28 @@ tbl_summary_by_designation <- map_dfr(levels(tbl_responses$designation), functio
           fct_rev()
   ) 
 
-plt_usage_by_designation <- tbl_summary_by_designation %>%  
-  ggplot(aes(designation, n_total, fill = usage_frequency)) %>% 
-  plot_usage_by_category()
-
-plt_usage_by_designation +
-  coord_flip()
+for(i in 1:length(years)) {
+  plot_title <- paste("Usage By Designation For", years[i])
+  
+  plt_usage_by_designation <- tbl_summary_by_designation %>%  
+    filter(year == years[i]) %>%
+    ggplot(aes(designation, n_total, fill = usage_frequency)) %>% 
+    plot_usage_by_category() +
+    coord_flip() +
+    ggtitle(plot_title, subtitle = waiver())
+  
+  print(plt_usage_by_designation)
+}
 
 
 ## ----------------------------------------------------------------------------------------------------------------------
 tbl_polyglot <- tbl_respondent_tool %>% 
   filter(!is.na(usage_frequency)) %>% 
-  group_by(respondent_id) %>% 
+  group_by(year, respondent_id) %>% 
   summarise(
     n_tools = sum(usage_frequency != 'Never')
   ) %>% 
-  group_by(n_tools) %>% 
+  group_by(year, n_tools) %>% 
   summarise(
     total_users = n()
   ) %>% 
@@ -321,28 +348,36 @@ tbl_polyglot <- tbl_respondent_tool %>%
     pct_users = total_users / sum(total_users)
   )
 
+# pct_check
+tbl_polyglot %>%
+  group_by(year) %>%
+  summarize(pct_users = sum(pct_users))
 
 ## ----------------------------------------------------------------------------------------------------------------------
+plot_title <- "Polyglot Usage Non-Never"
+
 plt_polyglot <- tbl_polyglot %>% 
+  #filter(year == years[i]) %>%
   ggplot(aes(n_tools, pct_users)) +
+  facet_grid(rows = vars(year)) +
   geom_bar(stat = 'identity', fill = bar_fill_colors[5]) +
   labs(x = "# of tools", y = "% of respondents") +
   scale_x_continuous(breaks = 1:9, labels = 1:9 %>% as.character()) +
   scale_y_continuous(labels = scales::percent) +
+  ggtitle(plot_title, subtitle = waiver()) +
   theme_minimal()
 
 plt_polyglot
-
 
 ## ----------------------------------------------------------------------------------------------------------------------
 tbl_polyglot_ge_week <- tbl_respondent_tool %>% 
   filter(usage_frequency %in% c('Daily', 'Weekly')) %>%
   filter(!is.na(usage_frequency)) %>% 
-  group_by(respondent_id) %>% 
+  group_by(year, respondent_id) %>% 
   summarise(
     n_tools = sum(usage_frequency != 'Never')
   ) %>% 
-  group_by(n_tools) %>% 
+  group_by(year, n_tools) %>% 
   summarise(
     total_users = n()
   ) %>% 
@@ -352,12 +387,16 @@ tbl_polyglot_ge_week <- tbl_respondent_tool %>%
 
 
 ## ----------------------------------------------------------------------------------------------------------------------
+plot_title <- "Polyglot Usage >= Weekly"
+
 plt_polyglot_ge_week <- tbl_polyglot_ge_week %>% 
   ggplot(aes(n_tools, pct_users)) +
+  facet_grid(rows = vars(year)) +
   geom_bar(stat = 'identity', fill = bar_fill_colors[5]) +
   labs(x = "# of tools", y = "% of respondents") +
   scale_x_continuous(breaks = 1:9, labels = 1:9 %>% as.character()) +
   scale_y_continuous(labels = scales::percent) +
+  ggtitle(plot_title, subtitle = waiver()) +
   theme_minimal()
 
 plt_polyglot_ge_week
