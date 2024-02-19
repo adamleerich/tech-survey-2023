@@ -373,11 +373,11 @@ plt_polyglot
 tbl_polyglot_ge_week <- tbl_respondent_tool %>% 
   filter(usage_frequency %in% c('Daily', 'Weekly')) %>%
   filter(!is.na(usage_frequency)) %>% 
-  group_by(respondent_id) %>% 
+  group_by(year, respondent_id) %>% 
   summarise(
     n_tools = sum(usage_frequency != 'Never')
   ) %>% 
-  group_by(n_tools) %>% 
+  group_by(year, n_tools) %>% 
   summarise(
     total_users = n()
   ) %>% 
@@ -387,12 +387,16 @@ tbl_polyglot_ge_week <- tbl_respondent_tool %>%
 
 
 ## ----------------------------------------------------------------------------------------------------------------------
+plot_title <- "Polyglot Usage >= Weekly"
+
 plt_polyglot_ge_week <- tbl_polyglot_ge_week %>% 
   ggplot(aes(n_tools, pct_users)) +
+  facet_grid(rows = vars(year)) +
   geom_bar(stat = 'identity', fill = bar_fill_colors[5]) +
   labs(x = "# of tools", y = "% of respondents") +
   scale_x_continuous(breaks = 1:9, labels = 1:9 %>% as.character()) +
   scale_y_continuous(labels = scales::percent) +
+  ggtitle(plot_title, subtitle = waiver()) +
   theme_minimal()
 
 plt_polyglot_ge_week
