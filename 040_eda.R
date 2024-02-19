@@ -28,6 +28,8 @@ tbl_responses$designation <- tbl_responses$actuarial_credential
 tbl_demographic$designation <- tbl_demographic$actuarial_credential
 tbl_respondent_tool$designation <- tbl_respondent_tool$actuarial_credential
 
+years <- sort(unique(tbl_responses$year))
+
 
 ## ----------------------------------------------------------------------------------------------------------------------
 tbl_respondents <- tbl_responses %>% 
@@ -157,6 +159,7 @@ tbl_usage_summary %>%
   filter(tool == 'R') %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = usage_frequency)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -166,6 +169,7 @@ tbl_usage_summary %>%
   filter(!tool %in% c('Excel', 'MATLAB')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -175,6 +179,7 @@ tbl_usage_summary %>%
   filter(!tool %in% c('Excel', 'MATLAB', 'SQL')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -184,6 +189,7 @@ tbl_usage_summary %>%
   filter(tool %in% c('Excel', 'SQL')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -193,6 +199,7 @@ tbl_usage_summary %>%
   filter(!tool %in% c('Excel', 'MATLAB', 'SQL')) %>% 
   ggplot(aes(year, pct_tool)) + 
   geom_line(aes(color = tool)) + 
+  scale_x_continuous(breaks = years) +
   theme_minimal()
 
 
@@ -205,6 +212,7 @@ plt_usage_summary <- function(tbl_summary_in){
   tbl_summary_in %>% 
     ggplot(aes(tool, n_total, fill = usage_frequency)) %>% 
     augment_shifted_stack(f_usage) +
+    facet_grid(rows = vars(year)) +
     labs(fill = "Frequency")
 }
 
